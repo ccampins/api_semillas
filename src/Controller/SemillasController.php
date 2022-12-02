@@ -149,4 +149,27 @@ class SemillasController extends AbstractController
 
         }
     }
+
+    /**
+     * @Route("/semillas/show/{id}", name="show", methods={"GET"})
+     */
+    public function show(Request $request, int $id): Response
+    {
+        $semilla = $this->repository->findOneById($id); 
+        // dd($semilla);die();/* Encuentro el registro que rquiero por el id */
+
+        try {
+
+            $this->entityManager->persist($semilla);
+            $this->entityManager->flush();
+
+            return $this->json($semilla);
+
+        }catch(Exception $e){
+
+            $message = 'Transaction Error Semillas Update';
+            return $this->helper->handleException($e, $message);
+
+        }
+    }
 }
